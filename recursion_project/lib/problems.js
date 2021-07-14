@@ -17,9 +17,20 @@
 // lucasNumber(5)   // => 11
 // lucasNumber(9)   // => 76
 function lucasNumber(n) {
+    if (n === 0) return 2;
+    if (n === 1) return 1;
 
+    let sum = lucasNumber(n-1) + lucasNumber(n-2);
+
+    return sum;
 }
 
+// console.log(lucasNumber(0));   // => 2
+// console.log(lucasNumber(1));   // => 1
+// console.log(lucasNumber(2));   // => 3
+// console.log(lucasNumber(3));   // => 4
+// console.log(lucasNumber(5));   // => 11
+// console.log(lucasNumber(9));   // => 76
 
 // Write a function, sumArray(array), that takes in an array of numbers.
 // The function should return the total sum of the elements.
@@ -33,9 +44,19 @@ function lucasNumber(n) {
 // sumArray([5, 2])         // => 7
 // sumArray([4, 10, -1, 2]) // => 15
 function sumArray(array) {
+    if (array.length === 0) return 0;
+    if (array.length === 1) return array[0];
 
+    let num = array.pop();
+    const sum = num + sumArray(array);
+
+    return sum;
 }
 
+// console.log(sumArray([]));             // => 0
+// console.log(sumArray([5]));            // => 5
+// console.log(sumArray([5, 2]));         // => 7
+// console.log(sumArray([4, 10, -1, 2])); // => 15
 
 // Write a function, reverseString(str), that takes in a string.
 // The function should return the string with it's characters in reverse order.
@@ -49,9 +70,19 @@ function sumArray(array) {
 // reverseString("internet")    // => "tenretni"
 // reverseString("friends")     // => "sdneirf"
 function reverseString(str) {
+    if (str.length === 0) return "";
+    if (str.length === 1) return str[0];
 
+    const first = str[0];
+    const reversed = reverseString(str.slice(1)) + first;
+
+    return reversed;
 }
 
+// console.log(reverseString(""));            // => ""
+// console.log(reverseString("c"));           // => "c"
+// console.log(reverseString("internet"));    // => "tenretni"
+// console.log(reverseString("friends"));     // => "sdneirf"
 
 // Write a function, pow(base, exponent), that takes in two numbers.
 // The function should calculate the base raised to the exponent power.
@@ -70,8 +101,17 @@ function reverseString(str) {
 // pow(3, 4)    // => 81
 // pow(2, -5)   // => 0.03125
 function pow(base, exponent) {
+    if (exponent === 0) return 1;
+    if (exponent < 0) return 1/ pow(base, -exponent);
 
+    return base * pow(base, exponent - 1);
 }
+
+// console.log(pow(2, 0));    // => 1
+// console.log(pow(2, 1));    // => 2
+// console.log(pow(2, 5));    // => 32
+// console.log(pow(3, 4));    // => 81
+// console.log(pow(2, -5));   // => 0.03125
 
 
 // A 1-dimensional array is also known as a flattened array.
@@ -103,51 +143,96 @@ function pow(base, exponent) {
 //     2-dimensional array: [['some data']]
 //     3-dimensional array: [[['some data']]]
 function flatten(data) {
+    if (typeof data != 'object') return data;
 
+    let flattened = [];
+
+    data.forEach(element => {
+        if (typeof data === 'object') {
+            flattened = flattened.concat(flatten(element));
+        } else {
+            flattened.push(element);
+        }
+    });
+
+    return flattened;
 }
 
-// Write a function, fileFinder(directories, targetFile), that accepts an object representing directories and a string respresenting a filename.
+// array_1 = [1, 2, [[3, 4], [5, [6]]], [7, 8]];
+// console.log(flatten(array_1));      // => [ 1, 2, 3, 4, 5, 6, 7, 8 ]
+// //
+// array_2 = ['this', ['problem', 'is'], [['pretty', 'tough'], [[':)']]]];
+// console.log(flatten(array_2));      // => [ 'this', 'problem', 'is', 'pretty', 'tough', ':)' ]
+// //
+// console.log(flatten('base case'));  // => [ 'base case' ]
+
+// Write a function, fileFinder(directories, targetFile), that accepts an object representing directories 
+// and a string respresenting a filename.
 // The function should return true, if the file is contained anywhere in the given directories.
 // Note that directory names will begin with '/', but file names will not.
 // 
 // Example:
 //
-// let desktop = {
-//     '/images': {
-//         'app_academy_logo.svg': null,
-//         '/parks': {
-//             'yosemite.jpeg': null,
-//             'acadia.jpeg': null,
-//             'yellowstone.png': null
-//         },
-//         '/pets': {
-//             'trixie_lou.jpeg': null,
-//             'rolo.jpeg': null,
-//             'opal.jpeg': null,
-//             'diana.jpeg': null,
-//         }
-//     },
-//     '/music': {
-//         'hey_programmers.mp3': null,
-//         '/genres': {
-//             '/rock': {
-//                 'everlong.flac': null,
-//                 'livin_on_a_prayer.mp3': null
-//             },
-//             '/hip_hop': {
-//                 'express_yourself.wav': null,
-//                 'ny_state_of_mind.mp3': null
-//             }
-//         }
-//     }
-// };
-//
+let desktop = {
+    '/images': {
+        'app_academy_logo.svg': null,
+        '/parks': {
+            'yosemite.jpeg': null,
+            'acadia.jpeg': null,
+            'yellowstone.png': null
+        },
+        '/pets': {
+            'trixie_lou.jpeg': null,
+            'rolo.jpeg': null,
+            'opal.jpeg': null,
+            'diana.jpeg': null,
+        }
+    },
+    '/music': {
+        'hey_programmers.mp3': null,
+        '/genres': {
+            '/rock': {
+                'everlong.flac': null,
+                'livin_on_a_prayer.mp3': null
+            },
+            '/hip_hop': {
+                'express_yourself.wav': null,
+                'ny_state_of_mind.mp3': null
+            }
+        }
+    },
+    '/houses': {}
+};
+
 // fileFinder(desktop, 'app_academy_logo.svg');     // => true
 // fileFinder(desktop, 'everlong.flac');            // => true
 // fileFinder(desktop, 'sequoia.jpeg');             // => false
 function fileFinder(directories, targetFile) {
+    if (!directories) return false;
 
+    // var found = false
+    // iterate through directories
+    // if directory begins with "/", filefinder() 
+        // if filefinder is true return true
+    // if not, check if file === targetFile
+    for (const directory in directories) {
+        if (directory[0] === "/") {
+            if (fileFinder(directories[directory], targetFile)) {
+                return true;
+            }
+        } else {
+            if (directory === targetFile) {
+                return true;
+            }
+        }
+    }
+
+    return false;
 }
+
+// console.log(fileFinder(desktop, 'app_academy_logo.svg'));     // => true
+// console.log(fileFinder(desktop, 'everlong.flac'));            // => true
+// console.log(fileFinder(desktop, 'sequoia.jpeg'));             // => false
 
 
 // Write another function, pathFinder(directories, targetFile), that returns the path that contains the targetFile.
@@ -160,9 +245,28 @@ function fileFinder(directories, targetFile) {
 // pathFinder(desktop, 'everlong.flac'));       // => '/music/genres/rock/everlong.flac'
 // pathFinder(desktop, 'honeybadger.png'));     // => null
 function pathFinder(directories, targetFile) {
+    if (!directories) return null;
 
+
+    for (const directory in directories) {
+        if (directory[0] === "/") {
+            const res = pathFinder(directories[directory], targetFile)
+            if (res != null) {
+                return directory + res;
+            }
+        } else {
+            if (directory === targetFile) {
+                return '/' + directory;
+            }
+        }
+    }
+
+    return null;
 }
 
+// console.log(pathFinder(desktop, 'trixie_lou.jpeg'));     // => '/images/pets/trixie_lou.jpeg'
+// console.log(pathFinder(desktop, 'everlong.flac'));       // => '/music/genres/rock/everlong.flac'
+// console.log(pathFinder(desktop, 'honeybadger.png'));     // => null
 
 module.exports = {
     lucasNumber,
